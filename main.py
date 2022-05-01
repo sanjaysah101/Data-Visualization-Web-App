@@ -41,6 +41,7 @@ def sidebar():
                 st.write("File Formate is not supported")
 
 def mainContent():
+    st.header("Visualize Your Data")
     if df is not None:
         st.write(df)
         # graph = ["Line Chart", "Bar Chart"]
