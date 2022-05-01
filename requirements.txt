@@ -1,0 +1,8 @@
+streamlit
+numpy
+pandas
+seaborn
+matplotlib
+plotly
+scikit-learn
+covid
