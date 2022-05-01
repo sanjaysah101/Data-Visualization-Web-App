@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import numpy as np
 
+
+
+PAGE_CONFIG = {"page_title":"Data Visualization","page_icon":"chart_with_upwards_trend:", "layout":"centered"}
+st.set_page_config(**PAGE_CONFIG)
+
 def showGraphList():
     """This function will return all the graph available"""    
     graph = ["Line Chart", "Bar Chart", "Pie Chart"]
@@ -20,7 +25,8 @@ def sidebar():
     allowedExtension =['csv', 'xlsx']
     # linegraph = ""
     with st.sidebar:
-        uploaded_file = st.file_uploader("Choose a file")
+        uploaded_file = st.sidebar.file_uploader(label="Upload your csv or excel file (200 MB Max).", type=['csv','xlsx'])
+        # uploaded_file = st.file_uploader("Choose a file")
         if uploaded_file is not None:
             filename = uploaded_file.name   
             extension = filename[filename.index(".")+1:]
@@ -106,7 +112,7 @@ def mainContent():
             fig = plt.figure()
             plt.pie(x, labels = selectedData, autopct='%0.f%%')  # %).f%% means no of digit show after decimal
 
-            # st.balloons()
+            st.balloons()
             # st.write(option)
             plt.legend(title = option)
             st.pyplot(fig)
