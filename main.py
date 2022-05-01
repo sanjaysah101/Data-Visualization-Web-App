@@ -1,5 +1,3 @@
-import imp
-from re import X
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
@@ -38,7 +36,7 @@ def sidebar():
                 st.write("File Formate is not supported")
 
 def mainContent():
-    st.header("Data is Tabulaur Formate")
+    st.header("Visualization Your Data")
     if df is not None:
         st.write(df)
         # graph = ["Line Chart", "Bar Chart"]
