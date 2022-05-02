@@ -1,6 +1,6 @@
-from tkinter.tix import Tree
 import pandas as pd
 import matplotlib.pyplot as plt
+from pyparsing import empty
 import streamlit as st
 import numpy as np
 
@@ -61,62 +61,54 @@ def mainContent():
     if df is not None:
         st.write(df)
         # graph = ["Line Chart", "Bar Chart"]
+        label = "Chose the Column To which you want to compare"
+        st.header(label)            
+        columnLists = df.columns.values.tolist()     # to get list of columns
+        # labelColumn = st.selectbox("Select Column", columnLists)
+        
+        selectOption = []           
+        for i in df[columnList[0]]:
+            selectOption.append(i)
+        selectedData = st.multiselect(f"Choose {columnList[0]} to see", selectOption)
+
+        dataToVisualize = []
+        for i in selectedData:
+            # st.write(getIndexes(columnList[0], i))                
+            index = getIndexes(columnList[0], i)
+            # st.write(df[option][index])
+            # st.write(df[option][index])
+            value = df[option][index]
+            if type(value) is not str:
+                dataToVisualize.append(df[option][index])
+            else:
+                st.warning(f"The data type of {value} is not supporte")
+
+
+
         if opt == "Line Chart":
             label = "Line Chart for {} is".format(filename)
             st.header(label)
-            st.line_chart(df[option])
+            st.line_chart(dataToVisualize)
+
         elif opt == "Bar Chart":
             label = "Bar Chart for {} is".format(filename)
             st.header(label)
-            st.bar_chart(df[option])
-        elif opt == "Pie Chart":
+            st.bar_chart(dataToVisualize)
+        elif opt == "Pie Chart":          
             label = "Pie Chart for {} is".format(filename)
-            st.header(label)
-            # st.write(df[option][5])
-            # st.write(columnList[0])
-            
-            selectOption = []           
-            # data = []
-            for i in df[columnList[0]]:
-                selectOption.append(i)
-            selectedData = st.multiselect(f"chose {columnList[0]} to see", selectOption)
-            
-            dataToVisualize = []
-            for i in selectedData:
-                # st.write(getIndexes(columnList[0], i))                
-                index = getIndexes(columnList[0], i)
-                # st.write(df[option][index])
-                dataToVisualize.append(df[option][index])
-            
-            # st.write("choose data",chooseData)
-            # st.write("labels",selectedData)
-            # st.write("labels",indexs)
-            # st.write(type(option))
-
-            # st.write(dataToVisualize)
-            # for i in chooseData:
-            #     data.append(i)
-            #     # st.write(i)
-            # st.write(df.loc[df[selectedData[0]]])
-            #     # st.write(df.loc[df[i]])
-            #     row = df.loc[df['Country'] == i]
-            #     # st.write(row)
-            #     st.write(row[option])
-            # st.write(df.loc[df['Country'] == i])
-            #     # st.write(df.loc[df[option] == i])
-                
-            # # st.write(columnList[0])
-            
+            st.header(label)  
             x = np.array(dataToVisualize, 'f')
             # st.write(x)
-            fig = plt.figure()
-            plt.pie(x, labels = selectedData, autopct='%0.f%%')  # %).f%% means no of digit show after decimal
+            fig = plt.figure(figsize=(10,10))
+            if len(dataToVisualize) != 0:
+                plt.pie(x, labels = selectedData, autopct='%.5f%%')  # %).f%% means no of digit show after decimal
 
-            st.balloons()
+            # st.balloons()
             # st.write(option)
-            plt.legend(title = option)
-            st.pyplot(fig)
-            
+                plt.legend(title = option)
+                st.pyplot(fig)
+            else:
+                st.write("There is nothing to show!!")
         # else:
         #     st.write("Loading data")
     else:
